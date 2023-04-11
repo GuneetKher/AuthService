@@ -1,0 +1,681 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: User API
+schemes:
+  - https
+produces:
+  - application/json
+x-google-endpoints:
+- name: https://wellnesswatch-b62qapbl.uc.gateway.dev
+  allowCors: True
+paths:
+  # UserService ------------
+  /users:
+    options:
+      summary: CORS pre-flight
+      operationId: corsUsers
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getUser
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get all users
+      responses:
+        '200':
+          description: OK
+    post:
+      operationId: createUser
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Create a new user
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: OK
+
+  /users/{id}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsUserId
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getUserById
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+
+    delete:
+      operationId: deleteUserById
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Delete a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      operationId: updateUserById
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Update a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+  /users/login:
+    options:
+      summary: CORS pre-flight
+      operationId: corsUserLogin
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: LoginUser
+      x-google-backend:
+        address: 'http://www.gins.cloud:5167/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Log in as a user
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: OK
+
+  # AuthService -------------
+  /auth/register:
+    options:
+      summary: CORS pre-flight
+      operationId: corsRegister
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: Register
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Register as a user
+      parameters:
+        - name: usercredentials
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredentials'
+      responses:
+        '200':
+          description: OK
+  /auth/login:
+    options:
+      summary: CORS pre-flight
+      operationId: corsLogin
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: Login
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Log in as a user
+      parameters:
+        - name: usercredentials
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserCredentials'
+      responses:
+        '200':
+          description: OK
+  /auth/logout:
+    options:
+      summary: CORS pre-flight
+      operationId: corsLogout
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: Logout
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Log out a user
+      responses:
+        '200':
+          description: OK
+  /auth/restricted:
+    options:
+      summary: CORS pre-flight
+      operationId: corsRestricted
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: CheckToken
+      x-google-backend:
+        address: 'http://www.gins.cloud:5288/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: True
+      summary: Endpoint to check token
+      responses:
+        '200':
+          description: OK
+
+  #Notifservice -------------
+  /Notifications:
+    options:
+      summary: CORS pre-flight
+      operationId: corsCreateNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: notification
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Notif'
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: createNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: True
+      summary: Get all posts
+      parameters:
+        - name: notification
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Notif'
+      responses:
+        '200':
+          description: OK
+  /Notifications/User/{user_id_value}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsgetNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: user_id_value
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: True
+      summary: Get all posts
+      parameters:
+        - name: user_id_value
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+  /Notifications/{notif_id}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsMarkNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: notif_id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: markNotif
+      x-google-backend:
+        address: 'http://www.gins.cloud:5242/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: True
+      summary: Get all posts
+      parameters:
+        - name: notif_id
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+
+  # ModService -------------
+  /Mod/{id}/flag:
+    options:
+      summary: CORS pre-flight
+      operationId: corsModFlag
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: post
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: flagPost
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Flag a post
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: post
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        200:
+          description: "Success"
+  /Mod:
+    options:
+      summary: CORS pre-flight
+      operationId: corsMod
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getFlaggedPosts
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get all flagged posts
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+  /Mod/{postId}/moderate:
+    options:
+      summary: CORS pre-flight
+      operationId: corsModModerate
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: modPost
+      x-google-backend:
+        address: 'http://www.gins.cloud:5278/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Moderate a post
+      parameters:
+        - name: "postId"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+
+
+  # PostService ------
+  /Post:
+    options:
+      summary: CORS pre-flight
+      operationId: corsPost
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters: 
+        - name: post
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Post'
+        - name: "userId"
+          in: "query"
+          description: "ID of user"
+          required: false
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: postCreate
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Create a post
+      parameters: 
+        - name: post
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Post"
+    get:
+      operationId: getFeed
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get user feed
+      parameters:
+        - name: "userId"
+          in: "query"
+          description: "ID of user"
+          required: false
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+  /Post/user/{userId}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsPostUser
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of user"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getUserPosts
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get user posts
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of user"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+  /Post/{id}/ismod:
+    options:
+      summary: CORS pre-flight
+      operationId: corsPostIsMod
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    put:
+      operationId: moderatePost
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Moderate a post
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+  /Post/comments/{postId}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsPostComments
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        # - name: "parentId"
+        #   in: "query"
+        #   description: "ID of parent post"
+        #   required: false
+        #   type: "string"
+        - name: "postId"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    get:
+      operationId: getComments
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Get all comments of a post
+      parameters:
+        # - name: "parentId"
+        #   in: "query"
+        #   description: "ID of parent post"
+        #   required: false
+        #   type: "string"
+        - name: "postId"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
+  /Post/flag/{id}/{userId}:
+    options:
+      summary: CORS pre-flight
+      operationId: corsPostFlagByUser
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+        - name: "userId"
+          in: "path"
+          description: "ID of user"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: A successful response
+    post:
+      operationId: markFlagged
+      x-google-backend:
+        address: 'http://www.gins.cloud:5239/'
+        path_translation: APPEND_PATH_TO_ADDRESS
+      summary: Mark a post flagged
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+        - name: "userId"
+          in: "path"
+          description: "ID of user"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Success"
+
+
+# schemas -----
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      role:
+        type: string
+      passwordHash:
+        type: string
+      passwordSalt:
+        type: string
+  UserCredentials:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+  Post:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      author:
+        type: "string"
+      text:
+        type: "string"
+      timestamp:
+        type: "string"
+      parentID:
+        type: "string"
+      isMod:
+        type: "boolean"
+      flaggedBy:
+        type: "array"
+        items:
+          type: "string"
+  Notif:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      postID:
+        type: "string"
+      postText:
+        type: "string"
+      commentUsername:
+        type: "string"

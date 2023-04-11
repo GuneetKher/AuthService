@@ -64,7 +64,7 @@ namespace AuthService.Controllers
         [HttpGet("restricted")]
         public IActionResult GetRestricted()
         {
-            return Ok("This is a restricted endpoint");
+            return Ok();
         }
     }
 }

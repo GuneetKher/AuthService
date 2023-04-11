@@ -1,0 +1,171 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "User API"
+    },
+    "schemes": [
+      "https"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/users": {
+        "get": {
+          "operationId": "getUser",
+          "x-google-backend": {
+            "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+            "path_translation": "APPEND_PATH_TO_ADDRESS"
+          },
+          "summary": "Get all users",
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "post": {
+          "operationId": "createUser",
+          "x-google-backend": {
+            "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+            "path_translation": "APPEND_PATH_TO_ADDRESS"
+          },
+          "summary": "Create a new user",
+          "parameters": [
+            {
+              "name": "user",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/users/{id}": {
+        "get": {
+          "operationId": "getUserById",
+          "x-google-backend": {
+            "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+            "path_translation": "APPEND_PATH_TO_ADDRESS"
+          },
+          "summary": "Get a user by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "delete": {
+          "operationId": "deleteUserById",
+          "x-google-backend": {
+            "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+            "path_translation": "APPEND_PATH_TO_ADDRESS"
+          },
+          "summary": "Delete a user by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "put": {
+          "operationId": "updateUserById",
+          "x-google-backend": {
+            "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+            "path_translation": "APPEND_PATH_TO_ADDRESS"
+          },
+          "summary": "Update a user by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/users/login":{
+        "post": {
+            "operationId": "LoginUser",
+            "x-google-backend": {
+              "address": "https://userservice-42pm2bswzq-uc.a.run.app",
+              "path_translation": "APPEND_PATH_TO_ADDRESS"
+            },
+            "summary": "Log in as a user",
+            "parameters": [
+              {
+                "name": "user",
+                "in": "body",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+      }
+    },
+    "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "passwordHash": {
+            "type": "string"
+          },
+          "passwordSalt": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }

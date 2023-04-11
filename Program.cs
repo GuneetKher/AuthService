@@ -8,10 +8,19 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5288";
+var url = $"http://0.0.0.0:{port}";
+
 // Add services to the container.
 // Read JWT configuration from appsettings.json
 var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
+if (builder.Environment.IsProduction())
+{
+    builder.Services.Configure<ServiceAddresses>(builder.Configuration.GetSection("prod-addresses"));
+}
+else{
 builder.Services.Configure<ServiceAddresses>(builder.Configuration.GetSection("addresses"));
+}
 builder.Services.AddSingleton(jwtConfig);
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
@@ -31,6 +40,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtConfig.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret))
         };
+    });
+builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
     });
 
 builder.Services.AddControllers();
@@ -68,16 +86,17 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.UseExceptionHandler("/error");
-app.Run();
+app.Run(url);
